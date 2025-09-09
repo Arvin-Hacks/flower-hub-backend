@@ -1,0 +1,288 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  USER
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum AuthProvider {
+  LOCAL
+  GOOGLE
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  REFUNDED
+}
+
+enum PaymentStatus {
+  PAID
+  PENDING
+  FAILED
+  REFUNDED
+}
+
+enum PaymentMethod {
+  CARD
+  PAYPAL
+  APPLE_PAY
+  GOOGLE_PAY
+  STRIPE
+  CASH_ON_DELIVERY
+}
+
+enum AddressType {
+  BILLING
+  SHIPPING
+}
+
+model User {
+  id              String       @id @default(auto()) @map("_id") @db.ObjectId
+  email           String       @unique
+  password        String?
+  firstName       String
+  lastName        String
+  role            UserRole     @default(USER)
+  isEmailVerified Boolean      @default(false)
+  avatar          String?
+  provider        AuthProvider @default(LOCAL)
+  providerId      String?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  // Relations
+  addresses       Address[]
+  orders          Order[]
+  cartItems       CartItem[]
+  wishlistItems   WishlistItem[]
+  reviews         ProductReview[]
+  refreshTokens   RefreshToken[]
+
+  @@map("users")
+}
+
+model RefreshToken {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  token     String   @unique
+  userId    String   @db.ObjectId
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("refresh_tokens")
+}
+
+model Address {
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String      @db.ObjectId
+  type      AddressType
+  firstName String
+  lastName  String
+  street    String
+  city      String
+  state     String
+  zipCode   String
+  country   String
+  phone     String?
+  isDefault Boolean     @default(false)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  shippingOrders    Order[] @relation("OrderShippingAddress")
+  billingOrders     Order[] @relation("OrderBillingAddress")
+
+  @@map("addresses")
+}
+
+model ProductCategory {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String   @unique
+  slug        String   @unique
+  description String
+  image       String
+  isActive    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  parentId    String?  @db.ObjectId
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  parent   ProductCategory?  @relation("CategoryHierarchy", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  children ProductCategory[] @relation("CategoryHierarchy")
+  products Product[]
+
+  @@map("product_categories")
+}
+
+model Product {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  name            String
+  slug            String   @unique
+  description     String
+  price           Float
+  originalPrice   Float?
+  categoryId      String   @db.ObjectId
+  subcategory     String
+  images          String[]
+  colors          String[]
+  sizes           String[]
+  inStock         Boolean  @default(true)
+  stockCount      Int      @default(0)
+  rating          Float    @default(0)
+  reviewCount     Int      @default(0)
+  tags            String[]
+  features        String[]
+  care            String[]
+  isActive        Boolean  @default(true)
+  isFeatured      Boolean  @default(false)
+  weight          Float?
+  length          Float?
+  width           Float?
+  height          Float?
+  dimensionUnit   String   @default("cm")
+  seoTitle        String?
+  seoDescription  String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  category     ProductCategory @relation(fields: [categoryId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  orderItems   OrderItem[]
+  cartItems    CartItem[]
+  wishlistItems WishlistItem[]
+  reviews      ProductReview[]
+
+  @@map("products")
+}
+
+model ProductReview {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  productId String   @db.ObjectId
+  rating    Int
+  title     String
+  comment   String
+  isVerified Boolean @default(false)
+  helpful   Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+  @@map("product_reviews")
+}
+
+model CartItem {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId        String   @db.ObjectId
+  productId     String   @db.ObjectId
+  quantity      Int
+  selectedColor String?
+  selectedSize  String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId, selectedColor, selectedSize])
+  @@map("cart_items")
+}
+
+model WishlistItem {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  productId String   @db.ObjectId
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+  @@map("wishlist_items")
+}
+
+model Order {
+  id                String        @id @default(auto()) @map("_id") @db.ObjectId
+  orderNumber       String        @unique
+  userId            String        @db.ObjectId
+  subtotal          Float
+  shipping          Float
+  tax               Float
+  discount          Float         @default(0)
+  total             Float
+  status            OrderStatus   @default(PENDING)
+  paymentMethod     PaymentMethod
+  paymentStatus     PaymentStatus @default(PENDING)
+  paymentIntentId   String?
+  trackingNumber    String?
+  estimatedDelivery DateTime?
+  notes             String?
+  shippingAddressId String        @db.ObjectId
+  billingAddressId  String        @db.ObjectId
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  user            User         @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  items           OrderItem[]
+  shippingAddress Address      @relation("OrderShippingAddress", fields: [shippingAddressId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  billingAddress  Address      @relation("OrderBillingAddress", fields: [billingAddressId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id            String  @id @default(auto()) @map("_id") @db.ObjectId
+  orderId       String  @db.ObjectId
+  productId     String  @db.ObjectId
+  quantity      Int
+  price         Float
+  selectedColor String?
+  selectedSize  String?
+
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("order_items")
+}
+
+model Coupon {
+  id                    String   @id @default(auto()) @map("_id") @db.ObjectId
+  code                  String   @unique
+  description           String
+  type                  String   // 'percentage' or 'fixed'
+  value                 Float
+  minimumAmount         Float?
+  maximumDiscount       Float?
+  usageLimit            Int?
+  usedCount             Int      @default(0)
+  isActive              Boolean  @default(true)
+  validFrom             DateTime
+  validUntil            DateTime
+  applicableProducts    String[]
+  applicableCategories  String[]
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@map("coupons")
+}
+
+
