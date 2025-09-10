@@ -52,18 +52,18 @@ export interface CloudinaryUploadResult {
   resource_type: string;
 }
 
-export type UserRole = 'user' | 'admin' | 'super_admin';
-export type AuthProvider = 'local' | 'google';
+export type UserRole = 'USER' | 'ADMIN' | 'SUPER_ADMIN';
+export type AuthProvider = 'LOCAL' | 'GOOGLE';
 
 export type OrderStatus = 
-  | 'pending' 
-  | 'confirmed' 
-  | 'processing' 
-  | 'shipped' 
-  | 'delivered' 
-  | 'cancelled' 
-  | 'refunded';
+  | 'PENDING' 
+  | 'CONFIRMED' 
+  | 'PROCESSING' 
+  | 'SHIPPED' 
+  | 'DELIVERED' 
+  | 'CANCELLED' 
+  | 'REFUNDED';
 
-export type PaymentStatus = 'paid' | 'pending' | 'failed' | 'refunded';
+export type PaymentStatus = 'PAID' | 'PENDING' | 'FAILED' | 'REFUNDED';
 
-export type PaymentMethod = 'card' | 'paypal' | 'apple_pay' | 'google_pay' | 'stripe' | 'CASH_ON_DELIVERY';
+export type PaymentMethod = 'CARD' | 'PAYPAL' | 'APPLE_PAY' | 'GOOGLE_PAY' | 'STRIPE' | 'CASH_ON_DELIVERY';

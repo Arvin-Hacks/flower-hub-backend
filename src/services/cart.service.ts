@@ -17,7 +17,11 @@ export const cartService = {
     const cartItems = await prisma.cartItem.findMany({
       where: { userId },
       include: {
-        product: true,
+        product: {
+          include: {
+            category: true,
+          },
+        },
       },
       orderBy: { createdAt: 'desc' },
     });
@@ -81,7 +85,11 @@ export const cartService = {
         where: { id: existingItem.id },
         data: { quantity: newQuantity },
         include: {
-          product: true,
+          product: {
+            include: {
+              category: true,
+            },
+          },
         },
       });
 
@@ -104,11 +112,15 @@ export const cartService = {
           userId,
           productId,
           quantity,
-          selectedColor,
-          selectedSize,
+          selectedColor: selectedColor || null,
+          selectedSize: selectedSize || null,
         },
         include: {
-          product: true,
+          product: {
+            include: {
+              category: true,
+            },
+          },
         },
       });
 
@@ -154,11 +166,15 @@ export const cartService = {
       where: { id: cartItemId },
       data: {
         quantity,
-        selectedColor,
-        selectedSize,
+        selectedColor: selectedColor || null,
+        selectedSize: selectedSize || null,
       },
       include: {
-        product: true,
+        product: {
+          include: {
+            category: true,
+          },
+        },
       },
     });
 
@@ -198,12 +214,19 @@ export const cartService = {
     const wishlistItems = await prisma.wishlistItem.findMany({
       where: { userId },
       include: {
-        product: true,
+        product: {
+          include: {
+            category: true,
+          },
+        },
       },
       orderBy: { createdAt: 'desc' },
     });
 
-    return wishlistItems as WishlistItem[];
+    return wishlistItems.map((item:any) => ({
+      ...item,
+      updatedAt: item.createdAt, // Use createdAt as updatedAt for wishlist items
+    })) as WishlistItem[];
   },
 
   // Add item to wishlist
@@ -237,13 +260,20 @@ export const cartService = {
         productId,
       },
       include: {
-        product: true,
+        product: {
+          include: {
+            category: true,
+          },
+        },
       },
     });
 
     logger.info('Item added to wishlist', { userId, wishlistItemId: wishlistItem.id, productId });
 
-    return wishlistItem as WishlistItem;
+    return {
+      ...wishlistItem,
+      updatedAt: wishlistItem.createdAt, // Use createdAt as updatedAt for wishlist items
+    } as WishlistItem;
   },
 
   // Remove item from wishlist

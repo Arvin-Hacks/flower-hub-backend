@@ -342,9 +342,10 @@ export const productService = {
     const product = await prisma.product.create({
       data: {
         ...productData,
+        categoryId: productData.categoryId,
         slug,
         inStock: productData.stockCount > 0,
-      },
+      } as any,
       include: {
         category: true,
       },

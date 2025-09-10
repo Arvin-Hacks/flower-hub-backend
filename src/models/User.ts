@@ -145,8 +145,8 @@ const userSchema = new Schema<IUser>({
   },
   role: {
     type: String,
-    enum: ['user', 'admin', 'super_admin'],
-    default: 'user'
+    enum: ['USER', 'ADMIN', 'SUPER_ADMIN'],
+    default: 'USER'
   },
   isEmailVerified: {
     type: Boolean,
@@ -158,8 +158,8 @@ const userSchema = new Schema<IUser>({
   },
   provider: {
     type: String,
-    enum: ['local', 'google'],
-    default: 'local'
+    enum: ['LOCAL', 'GOOGLE'],
+    default: 'LOCAL'
   },
   providerId: {
     type: String,
@@ -190,14 +190,14 @@ userSchema.index({ provider: 1, providerId: 1 });
 // Pre-save middleware to hash password
 userSchema.pre('save', async function(next: any) {
   // Only hash password if it's modified and not empty
-  if (!this.isModified('password') || !this.password) {
+  if (!this.isModified('password') || !(this as any).password) {
     return next();
   }
 
   try {
     // Hash password with cost of 12
     const salt = await bcrypt.genSalt(12);
-    this.password = await bcrypt.hash(this.password, salt);
+    (this as any).password = await bcrypt.hash((this as any).password, salt);
     next();
   } catch (error) {
     next(error as Error);

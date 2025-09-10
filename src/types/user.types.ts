@@ -16,7 +16,7 @@ export interface User extends BaseEntity {
 
 export interface Address {
   id: string;
-  type: 'billing' | 'shipping';
+  type: 'BILLING' | 'SHIPPING';
   firstName: string;
   lastName: string;
   street: string;
@@ -52,7 +52,7 @@ export interface UpdateUserRequest {
 }
 
 export interface CreateAddressRequest {
-  type: 'billing' | 'shipping';
+  type: 'BILLING' | 'SHIPPING';
   firstName: string;
   lastName: string;
   street: string;
@@ -65,7 +65,7 @@ export interface CreateAddressRequest {
 }
 
 export interface UpdateAddressRequest {
-  type?: 'billing' | 'shipping';
+  type?: 'BILLING' | 'SHIPPING';
   firstName?: string;
   lastName?: string;
   street?: string;

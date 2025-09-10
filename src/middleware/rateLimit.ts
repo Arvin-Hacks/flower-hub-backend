@@ -68,6 +68,6 @@ export const apiLimiter = rateLimit({
   legacyHeaders: false,
   keyGenerator: (req: Request) => {
     // Use user ID if authenticated, otherwise IP
-    return (req as { user?: { id: string } }).user?.id || req.ip || 'anonymous';
+    return (req as any).user?.id || req.ip || 'anonymous';
   },
 });
