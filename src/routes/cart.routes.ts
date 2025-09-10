@@ -1,10 +1,10 @@
 import { Router } from 'express';
-import { cartController } from '@/controllers/cart.controller';
-import { validate } from '@/utils/validation';
-import { commonSchemas } from '@/utils/validation';
+import { cartController } from '../controllers/cart.controller';
+import { validate } from '../utils/validation';
+import { commonSchemas } from '../utils/validation';
 import Joi from 'joi';
-import { authenticate } from '@/middleware/auth';
-import { validateParams } from '@/utils/validation';
+import { authenticate } from '../middleware/auth';
+import { validateParams } from '../utils/validation';
 
 const router = Router();
 

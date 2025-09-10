@@ -1,4 +1,4 @@
-import { prisma } from '@/database';
+import { prisma } from '../database';
 import { 
   Product, 
   ProductCategory, 
@@ -12,10 +12,10 @@ import {
   ProductFilters,
   PaginationParams,
   PaginatedResponse
-} from '@/types';
-import { AppError } from '@/middleware/error';
-import { calculatePagination, generateSlug } from '@/utils/helpers';
-import { logger } from '@/utils/logger';
+} from '../types';
+import { AppError } from '../middleware/error';
+import { calculatePagination, generateSlug } from '../utils/helpers';
+import { logger } from '../utils/logger';
 import { cloudinaryService } from './cloudinary.service';
 
 export const productService = {

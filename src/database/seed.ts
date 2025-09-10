@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
-import { hashPassword } from '@/utils/auth';
-import { logger } from '@/utils/logger';
-import { generateSlug } from '@/utils/helpers';
+import { hashPassword } from '../utils/auth';
+import { logger } from '../utils/logger';
+import { generateSlug } from '../utils/helpers';
 
 const prisma = new PrismaClient();
 

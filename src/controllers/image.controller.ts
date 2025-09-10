@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import { cloudinaryService } from '@/services/cloudinary.service';
-import { sendSuccess, sendError } from '@/utils/response';
-import { asyncHandler } from '@/utils/asyncHandler';
-import { logger } from '@/utils/logger';
+import { cloudinaryService } from '../services/cloudinary.service';
+import { sendSuccess, sendError } from '../utils/response';
+import { asyncHandler } from '../utils/asyncHandler';
+import { logger } from '../utils/logger';
 
 export const imageController = {
   // Upload single image

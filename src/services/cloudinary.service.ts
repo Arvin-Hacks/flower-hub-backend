@@ -1,7 +1,7 @@
 import { v2 as cloudinary } from 'cloudinary';
 import { Readable } from 'stream';
-import { logger } from '@/utils/logger';
-import { AppError } from '@/middleware/error';
+import { logger } from '../utils/logger';
+import { AppError } from '../middleware/error';
 
 // Cloudinary configuration
 const cloudName = process.env.CLOUDINARY_CLOUD_NAME;

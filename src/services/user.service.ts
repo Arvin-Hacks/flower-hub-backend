@@ -1,4 +1,4 @@
-import { prisma } from '@/database';
+import { prisma } from '../database';
 import { 
   User, 
   CreateUserRequest, 
@@ -7,10 +7,10 @@ import {
   UpdateAddressRequest,
   PaginationParams,
   PaginatedResponse
-} from '@/types';
-import { AppError } from '@/middleware/error';
-import { calculatePagination } from '@/utils/helpers';
-import { logger } from '@/utils/logger';
+} from '../types';
+import { AppError } from '../middleware/error';
+import { calculatePagination } from '../utils/helpers';
+import { logger } from '../utils/logger';
 
 export const userService = {
   // Get user by ID

@@ -1,4 +1,4 @@
-import { prisma } from '@/database';
+import { prisma } from '../database';
 import { 
   Order, 
   CreateOrderRequest, 
@@ -10,10 +10,10 @@ import {
   UpdateCouponRequest,
   PaginationParams,
   PaginatedResponse
-} from '@/types';
-import { AppError } from '@/middleware/error';
-import { calculatePagination, generateOrderNumber, calculateTax, calculateShipping } from '@/utils/helpers';
-import { logger } from '@/utils/logger';
+} from '../types';
+import { AppError } from '../middleware/error';
+import { calculatePagination, generateOrderNumber, calculateTax, calculateShipping } from '../utils/helpers';
+import { logger } from '../utils/logger';
 
 export const orderService = {
   // Get all orders

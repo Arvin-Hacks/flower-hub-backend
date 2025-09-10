@@ -29,16 +29,16 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "baseUrl": "./src",
-    "paths": {
-      "@/*": ["*"],
-      "@/types/*": ["types/*"],
-      "@/utils/*": ["utils/*"],
-      "@/middleware/*": ["middleware/*"],
-      "@/controllers/*": ["controllers/*"],
-      "@/services/*": ["services/*"],
-      "@/routes/*": ["routes/*"],
-      "@/database/*": ["database/*"]
-    }
+    // "paths": {
+    //   "@/*": ["*"],
+    //   "../types/*": ["types/*"],
+    //   "../utils/*": ["utils/*"],
+    //   "../middleware/*": ["middleware/*"],
+    //   "../controllers/*": ["controllers/*"],
+    //   "../services/*": ["services/*"],
+    //   "../routes/*": ["routes/*"],
+    //   "../database/*": ["database/*"]
+    // }
   },
   "include": [
     "src/**/*"
