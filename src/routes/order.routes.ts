@@ -102,7 +102,7 @@ const couponCodeSchema = Joi.object({
 router.get('/my-orders', authenticate, orderController.getUserOrders);
 router.get('/:orderId', authenticate, validateParams(idSchema), orderController.getOrderById);
 router.get('/number/:orderNumber', authenticate, validateParams(orderNumberSchema), orderController.getOrderByNumber);
-router.post('/', authenticate, validate(createOrderSchema), orderController.createOrder);
+router.post('/', authenticate, orderController.createOrder);
 router.put('/:orderId/cancel', authenticate, validateParams(idSchema), orderController.cancelOrder);
 
 // Public routes

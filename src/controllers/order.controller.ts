@@ -56,7 +56,9 @@ export const orderController = {
   // Create order
   createOrder: asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
     const order = await orderService.createOrder(ensureUser(req), req.body);
-    sendSuccess(res, order, 'Order created successfully', 201);
+    console.log(order);
+    return res.status(201).json({message: 'Order created successfully', order});
+    // sendSuccess(res, order, 'Order created successfully', 201);
   }),
 
   // Cancel order

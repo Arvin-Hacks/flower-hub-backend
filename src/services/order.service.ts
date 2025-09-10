@@ -85,7 +85,11 @@ export const orderService = {
           },
           items: {
             include: {
-              product: true,
+              product: {
+                include: {
+                  category: true,
+                },
+              },
             },
           },
           shippingAddress: true,
@@ -123,7 +127,11 @@ export const orderService = {
         },
         items: {
           include: {
-            product: true,
+            product: {
+              include: {
+                category: true,
+              },
+            },
           },
         },
         shippingAddress: true,
@@ -153,7 +161,11 @@ export const orderService = {
         },
         items: {
           include: {
-            product: true,
+            product: {
+              include: {
+                category: true,
+              },
+            },
           },
         },
         shippingAddress: true,
@@ -275,7 +287,11 @@ export const orderService = {
         },
         items: {
           include: {
-            product: true,
+            product: {
+              include: {
+                category: true,
+              },
+            },
           },
         },
         shippingAddress: true,
@@ -336,7 +352,11 @@ export const orderService = {
         },
         items: {
           include: {
-            product: true,
+            product: {
+              include: {
+                category: true,
+              },
+            },
           },
         },
         shippingAddress: true,
@@ -397,7 +417,11 @@ export const orderService = {
         },
         items: {
           include: {
-            product: true,
+            product: {
+              include: {
+                category: true,
+              },
+            },
           },
         },
         shippingAddress: true,

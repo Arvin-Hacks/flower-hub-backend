@@ -1,292 +1,314 @@
-# Flower Hub Backend API
+# 🌸 Flower Hub Backend API
 
-A professional, scalable backend API for the Flower Hub e-commerce platform built with TypeScript, Express.js, and Prisma.
+A professional, scalable backend API for the Flower Hub e-commerce platform built with Node.js, Express, TypeScript, and MongoDB.
 
-## Features
-
-- **Authentication & Authorization**: JWT-based auth with role-based access control (User, Admin, Super Admin)
-- **User Management**: Complete user profiles, addresses, and preferences
-- **Product Management**: Products, categories, reviews, and inventory tracking
-- **Order Management**: Order processing, status tracking, and payment integration
-- **Cart & Wishlist**: Shopping cart and wishlist functionality
-- **Admin Panel**: Comprehensive admin dashboard for managing the platform
-- **Security**: Rate limiting, input validation, CORS, and security headers
-- **Database**: PostgreSQL with Prisma ORM
-- **TypeScript**: Full type safety and modern JavaScript features
-
-## Tech Stack
-
-- **Runtime**: Node.js 18+
-- **Framework**: Express.js
-- **Language**: TypeScript
-- **Database**: PostgreSQL
-- **ORM**: Prisma
-- **Authentication**: JWT
-- **Validation**: Joi
-- **Security**: Helmet, CORS, Rate Limiting
-- **Logging**: Custom logger with file output
-
-## Project Structure
-
-```
-backend/
-├── src/
-│   ├── controllers/          # Request handlers
-│   ├── services/            # Business logic
-│   ├── routes/              # API routes
-│   ├── middleware/          # Custom middleware
-│   ├── utils/               # Utility functions
-│   ├── types/               # TypeScript type definitions
-│   ├── database/            # Database configuration
-│   └── server.ts            # Application entry point
-├── prisma/
-│   └── schema.prisma        # Database schema
-├── logs/                    # Application logs
-├── package.json
-├── tsconfig.json
-└── README.md
-```
-
-## Getting Started
+## 🚀 Quick Start
 
 ### Prerequisites
-
-- Node.js 18 or higher
-- PostgreSQL 12 or higher
+- Node.js (v18 or higher)
+- MongoDB (local or cloud)
 - npm or yarn
 
-### Installation
+### 1. Install Dependencies
+```bash
+npm install
+```
 
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd flower-2/backend
-   ```
+### 2. Environment Setup
+Copy the example environment file and configure it:
+```bash
+cp .env.example .env
+```
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
+Edit `.env` with your configuration:
+```env
+# Database
+DATABASE_URL="mongodb://localhost:27017/flower-hub"
 
-3. **Environment Setup**
-   ```bash
-   cp env.example .env
-   ```
-   
-   Update the `.env` file with your configuration:
-   ```env
-   # Database
-   DATABASE_URL="postgresql://username:password@localhost:5432/flower_hub_db"
-   
-   # JWT
-   JWT_SECRET="your-super-secret-jwt-key-here"
-   JWT_EXPIRES_IN="7d"
-   JWT_REFRESH_SECRET="your-super-secret-refresh-key-here"
-   JWT_REFRESH_EXPIRES_IN="30d"
-   
-   # Server
-   PORT=5000
-   NODE_ENV="development"
-   
-   # CORS
-   FRONTEND_URL="http://localhost:5173"
-   ```
+# JWT Secrets
+JWT_SECRET="your-super-secret-jwt-key"
+JWT_REFRESH_SECRET="your-super-secret-refresh-key"
 
-4. **Database Setup**
-   ```bash
-   # Generate Prisma client
-   npm run db:generate
-   
-   # Run database migrations
-   npm run db:migrate
-   
-   # (Optional) Seed the database
-   npm run db:seed
-   ```
+# Server
+PORT=5000
+NODE_ENV=development
 
-5. **Start the development server**
-   ```bash
-   npm run dev
-   ```
+# Cloudinary (for image uploads)
+CLOUDINARY_CLOUD_NAME="your-cloud-name"
+CLOUDINARY_API_KEY="your-api-key"
+CLOUDINARY_API_SECRET="your-api-secret"
+```
+
+### 3. Database Setup
+Run the complete database setup (generates client, runs migrations, and seeds data):
+```bash
+npm run db:setup
+```
+
+Or run individual steps:
+```bash
+# Generate Prisma client
+npm run db:generate
+
+# Run migrations
+npm run db:migrate
+
+# Seed database with sample data
+npm run db:seed
+```
+
+### 4. Start Development Server
+```bash
+npm run dev
+```
 
 The API will be available at `http://localhost:5000`
 
-## API Documentation
+## 📚 Available Scripts
 
-### Base URL
+| Script | Description |
+|--------|-------------|
+| `npm run dev` | Start development server with hot reload |
+| `npm run build` | Build the project for production |
+| `npm run start` | Start production server |
+| `npm run lint` | Run ESLint |
+| `npm run lint:fix` | Fix ESLint errors |
+| `npm run test` | Run tests |
+| `npm run test:watch` | Run tests in watch mode |
+| `npm run db:generate` | Generate Prisma client |
+| `npm run db:migrate` | Run database migrations |
+| `npm run db:studio` | Open Prisma Studio |
+| `npm run db:seed` | Seed database with sample data |
+| `npm run db:setup` | Complete database setup |
+
+## 🗄️ Database Schema
+
+### Core Models
+- **User** - User accounts and authentication
+- **Product** - Flower products with variants
+- **ProductCategory** - Product categorization
+- **CartItem** - Shopping cart items
+- **WishlistItem** - User wishlist items
+- **Order** - Customer orders
+- **OrderItem** - Individual order items
+- **Address** - User shipping/billing addresses
+- **Coupon** - Discount codes
+- **ProductReview** - Product reviews and ratings
+
+### Key Features
+- **MongoDB** with Prisma ORM
+- **JWT Authentication** with refresh tokens
+- **Role-based Access Control** (USER, ADMIN, SUPER_ADMIN)
+- **Image Upload** with Cloudinary integration
+- **Comprehensive Product Management**
+- **Shopping Cart & Wishlist**
+- **Order Management System**
+- **Coupon System**
+- **Review System**
+
+## 🔌 API Endpoints
+
+### Authentication
+- `POST /api/auth/register` - User registration
+- `POST /api/auth/login` - User login
+- `POST /api/auth/refresh` - Refresh access token
+- `POST /api/auth/logout` - User logout
+- `GET /api/auth/me` - Get current user
+
+### Products
+- `GET /api/products` - Get all products (with filtering, pagination)
+- `GET /api/products/:id` - Get product by ID
+- `GET /api/products/featured` - Get featured products
+- `GET /api/products/popular` - Get popular products
+- `GET /api/products/new` - Get new products
+- `GET /api/products/sale` - Get products on sale
+- `POST /api/products` - Create product (Admin)
+- `PUT /api/products/:id` - Update product (Admin)
+- `DELETE /api/products/:id` - Delete product (Admin)
+- `POST /api/products/bulk-delete` - Bulk delete products (Admin)
+
+### Categories
+- `GET /api/categories` - Get all categories
+- `GET /api/categories/:id` - Get category by ID
+- `POST /api/categories` - Create category (Admin)
+- `PUT /api/categories/:id` - Update category (Admin)
+- `DELETE /api/categories/:id` - Delete category (Admin)
+
+### Cart
+- `GET /api/cart` - Get user's cart
+- `POST /api/cart/add` - Add item to cart
+- `PUT /api/cart/items/:id` - Update cart item
+- `DELETE /api/cart/items/:id` - Remove cart item
+- `DELETE /api/cart/clear` - Clear entire cart
+
+### Wishlist
+- `GET /api/cart/wishlist` - Get user's wishlist
+- `POST /api/cart/wishlist/add` - Add item to wishlist
+- `DELETE /api/cart/wishlist/:id` - Remove wishlist item
+- `POST /api/cart/wishlist/:id/move-to-cart` - Move to cart
+
+### Orders
+- `GET /api/orders` - Get user's orders
+- `GET /api/orders/:id` - Get order by ID
+- `POST /api/orders` - Create new order
+- `PUT /api/orders/:id/cancel` - Cancel order
+
+### Admin
+- `GET /api/admin/products` - Get all products (Admin)
+- `GET /api/admin/products/stats` - Get product statistics
+- `GET /api/admin/orders` - Get all orders (Admin)
+- `PUT /api/admin/orders/:id` - Update order status (Admin)
+
+## 🌱 Sample Data
+
+The database comes pre-seeded with:
+
+### Users
+- **Admin**: `admin@flowerhub.com` / `admin123`
+- **User**: `user@flowerhub.com` / `user123`
+
+### Categories (10)
+- Roses, Tulips, Lilies, Sunflowers, Orchids
+- Bouquets, Arrangements, Plants, Centerpieces, Decorations
+
+### Products (20+)
+- Comprehensive product catalog with realistic data
+- Multiple variants (colors, sizes)
+- Pricing, ratings, reviews
+- High-quality images from Unsplash
+
+### Coupons
+- `WELCOME10` - 10% off orders over $25
+- `SAVE20` - $20 off orders over $100
+
+## 🔧 Configuration
+
+### Environment Variables
+```env
+# Database
+DATABASE_URL="mongodb://localhost:27017/flower-hub"
+
+# JWT Configuration
+JWT_SECRET="your-super-secret-jwt-key"
+JWT_REFRESH_SECRET="your-super-secret-refresh-key"
+JWT_EXPIRES_IN="7d"
+JWT_REFRESH_EXPIRES_IN="30d"
+
+# Server
+PORT=5000
+NODE_ENV=development
+
+# Cloudinary
+CLOUDINARY_CLOUD_NAME="your-cloud-name"
+CLOUDINARY_API_KEY="your-api-key"
+CLOUDINARY_API_SECRET="your-api-secret"
+
+# CORS
+CORS_ORIGIN="http://localhost:3000"
+
+# Rate Limiting
+RATE_LIMIT_WINDOW_MS=900000
+RATE_LIMIT_MAX_REQUESTS=100
 ```
-http://localhost:5000/api/v1
-```
 
-### Authentication Endpoints
+## 🛡️ Security Features
 
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| POST | `/auth/register` | Register new user | No |
-| POST | `/auth/login` | Login user | No |
-| POST | `/auth/refresh-token` | Refresh access token | No |
-| POST | `/auth/logout` | Logout user | No |
-| POST | `/auth/logout-all` | Logout from all devices | Yes |
-| POST | `/auth/forgot-password` | Request password reset | No |
-| POST | `/auth/reset-password` | Reset password | No |
-| POST | `/auth/change-password` | Change password | Yes |
-| GET | `/auth/me` | Get current user | Yes |
+- **JWT Authentication** with refresh tokens
+- **Password Hashing** with bcrypt
+- **Rate Limiting** to prevent abuse
+- **CORS Protection** with configurable origins
+- **Input Validation** with Joi schemas
+- **SQL Injection Protection** with Prisma ORM
+- **XSS Protection** with proper sanitization
 
-### User Endpoints
+## 📊 Monitoring & Logging
 
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| GET | `/users/profile` | Get user profile | Yes |
-| PUT | `/users/profile` | Update user profile | Yes |
-| DELETE | `/users/account` | Delete user account | Yes |
-| GET | `/users/addresses` | Get user addresses | Yes |
-| POST | `/users/addresses` | Create address | Yes |
-| PUT | `/users/addresses/:id` | Update address | Yes |
-| DELETE | `/users/addresses/:id` | Delete address | Yes |
+- **Structured Logging** with Winston
+- **Request Logging** middleware
+- **Error Tracking** with detailed stack traces
+- **Performance Monitoring** with response times
 
-### Product Endpoints
-
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| GET | `/products` | Get all products | No |
-| GET | `/products/:id` | Get product by ID | No |
-| GET | `/products/slug/:slug` | Get product by slug | No |
-| GET | `/products/categories` | Get all categories | No |
-| GET | `/products/:id/reviews` | Get product reviews | No |
-| POST | `/products/:id/reviews` | Create product review | Yes |
-| PUT | `/products/reviews/:id` | Update review | Yes |
-| DELETE | `/products/reviews/:id` | Delete review | Yes |
-
-### Order Endpoints
-
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| GET | `/orders/my-orders` | Get user orders | Yes |
-| GET | `/orders/:id` | Get order by ID | Yes |
-| POST | `/orders` | Create order | Yes |
-| PUT | `/orders/:id/cancel` | Cancel order | Yes |
-| GET | `/orders/coupons` | Get available coupons | No |
-
-### Cart Endpoints
-
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| GET | `/cart` | Get user cart | Yes |
-| POST | `/cart/add` | Add item to cart | Yes |
-| PUT | `/cart/items/:id` | Update cart item | Yes |
-| DELETE | `/cart/items/:id` | Remove cart item | Yes |
-| DELETE | `/cart/clear` | Clear cart | Yes |
-| GET | `/cart/wishlist` | Get wishlist | Yes |
-| POST | `/cart/wishlist/add` | Add to wishlist | Yes |
-| DELETE | `/cart/wishlist/:id` | Remove from wishlist | Yes |
-
-### Admin Endpoints
-
-All admin endpoints require admin or super admin role.
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/users/admin/users` | Get all users |
-| POST | `/users/admin/users` | Create user |
-| PUT | `/users/admin/users/:id` | Update user |
-| DELETE | `/users/admin/users/:id` | Delete user |
-| GET | `/users/admin/stats` | Get user statistics |
-| POST | `/products/admin/products` | Create product |
-| PUT | `/products/admin/products/:id` | Update product |
-| DELETE | `/products/admin/products/:id` | Delete product |
-| POST | `/products/admin/categories` | Create category |
-| PUT | `/products/admin/categories/:id` | Update category |
-| DELETE | `/products/admin/categories/:id` | Delete category |
-| GET | `/orders/admin/orders` | Get all orders |
-| PUT | `/orders/admin/orders/:id` | Update order |
-| GET | `/orders/admin/summary` | Get order summary |
-| POST | `/orders/admin/coupons` | Create coupon |
-| PUT | `/orders/admin/coupons/:id` | Update coupon |
-| DELETE | `/orders/admin/coupons/:id` | Delete coupon |
-
-## Scripts
+## 🧪 Testing
 
 ```bash
-# Development
-npm run dev          # Start development server with hot reload
-npm run build        # Build for production
-npm run start        # Start production server
+# Run all tests
+npm test
 
-# Database
-npm run db:generate  # Generate Prisma client
-npm run db:migrate   # Run database migrations
-npm run db:studio    # Open Prisma Studio
-npm run db:seed      # Seed database with sample data
+# Run tests in watch mode
+npm run test:watch
 
-# Code Quality
-npm run lint         # Run ESLint
-npm run lint:fix     # Fix ESLint errors
-npm test             # Run tests
+# Run specific test file
+npm test -- --testNamePattern="Product"
 ```
 
-## Environment Variables
+## 🚀 Deployment
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `DATABASE_URL` | PostgreSQL connection string | Required |
-| `JWT_SECRET` | JWT signing secret | Required |
-| `JWT_EXPIRES_IN` | JWT expiration time | `7d` |
-| `JWT_REFRESH_SECRET` | Refresh token secret | Required |
-| `JWT_REFRESH_EXPIRES_IN` | Refresh token expiration | `30d` |
-| `PORT` | Server port | `5000` |
-| `NODE_ENV` | Environment | `development` |
-| `FRONTEND_URL` | Frontend URL for CORS | `http://localhost:5173` |
-| `CLOUDINARY_CLOUD_NAME` | Cloudinary cloud name | Optional |
-| `CLOUDINARY_API_KEY` | Cloudinary API key | Optional |
-| `CLOUDINARY_API_SECRET` | Cloudinary API secret | Optional |
-| `SMTP_HOST` | SMTP server host | Optional |
-| `SMTP_PORT` | SMTP server port | `587` |
-| `SMTP_USER` | SMTP username | Optional |
-| `SMTP_PASS` | SMTP password | Optional |
-| `STRIPE_SECRET_KEY` | Stripe secret key | Optional |
-| `STRIPE_PUBLISHABLE_KEY` | Stripe publishable key | Optional |
-| `STRIPE_WEBHOOK_SECRET` | Stripe webhook secret | Optional |
+### Production Build
+```bash
+npm run build
+npm start
+```
 
-## Security Features
+### Docker (Optional)
+```dockerfile
+FROM node:18-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+COPY dist ./dist
+EXPOSE 5000
+CMD ["npm", "start"]
+```
 
-- **Rate Limiting**: Prevents abuse with configurable limits
-- **Input Validation**: Joi-based request validation
-- **CORS**: Configurable cross-origin resource sharing
-- **Helmet**: Security headers
-- **JWT**: Secure token-based authentication
-- **Password Hashing**: bcrypt with salt rounds
-- **SQL Injection Protection**: Prisma ORM protection
+## 📖 API Documentation
 
-## Error Handling
-
-The API uses a consistent error response format:
-
+### Request/Response Format
+All API responses follow this format:
 ```json
 {
-  "success": false,
-  "error": "Error message",
-  "errors": {
-    "field": ["Validation error message"]
-  }
+  "success": true,
+  "message": "Operation successful",
+  "data": { ... },
+  "pagination": { ... } // For paginated responses
 }
 ```
 
-## Logging
+### Error Format
+```json
+{
+  "success": false,
+  "message": "Error description",
+  "error": "Detailed error information"
+}
+```
 
-- Development: Console logging with Morgan
-- Production: File logging to `logs/` directory
-- Error tracking with stack traces
-- Request/response logging
+### Authentication
+Include the JWT token in the Authorization header:
+```
+Authorization: Bearer <your-jwt-token>
+```
 
-## Contributing
+## 🤝 Contributing
 
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
-4. Add tests if applicable
-5. Run linting and tests
+4. Add tests for new functionality
+5. Run the test suite
 6. Submit a pull request
 
-## License
+## 📄 License
 
-MIT License - see LICENSE file for details
+This project is licensed under the MIT License.
+
+## 🆘 Support
+
+For support and questions:
+- Check the [Seeding Guide](./SEEDING_GUIDE.md)
+- Review the API documentation
+- Check the troubleshooting section
+- Open an issue on GitHub
+
+---
+
+**Happy Coding! 🌸✨**

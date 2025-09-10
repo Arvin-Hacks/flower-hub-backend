@@ -11,10 +11,13 @@
     "lint:fix": "eslint src --ext .ts --fix",
     "test": "jest",
     "test:watch": "jest --watch",
-    "db:migrate": "prisma migrate dev",
+    "db:migrate": "prisma db push",
+    "db:push": "prisma db push",
     "db:generate": "prisma generate",
     "db:studio": "prisma studio",
-    "db:seed": "tsx src/database/seed.ts"
+    "db:seed": "tsx src/database/seed.ts",
+    "db:seed:guide": "node scripts/seed-db.js",
+    "db:setup": "node scripts/setup-db.js"
   },
   "keywords": [
     "e-commerce",
