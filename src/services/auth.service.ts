@@ -73,7 +73,7 @@ export const authService = {
       lastName: user.lastName,
       role: user.role,
       isEmailVerified: user.isEmailVerified,
-      avatar: user.avatar,
+      avatar: user.avatar || '',
       provider: user.provider,
     });
 
@@ -89,7 +89,10 @@ export const authService = {
     logger.info('User registered successfully', { userId: user.id, email: user.email });
 
     return {
-      user,
+      user: {
+        ...user,
+        avatar: user.avatar || '',
+      },
       tokens,
     };
   },
@@ -108,7 +111,7 @@ export const authService = {
     }
 
     // Check password
-    const isPasswordValid = await comparePassword(password, user.password);
+    const isPasswordValid = await comparePassword(password, user.password || '');
     if (!isPasswordValid) {
       throw new AppError('Invalid email or password', 401);
     }
@@ -121,7 +124,7 @@ export const authService = {
       lastName: user.lastName,
       role: user.role,
       isEmailVerified: user.isEmailVerified,
-      avatar: user.avatar,
+      avatar: user.avatar || '',
       provider: user.provider,
     });
 
@@ -144,7 +147,7 @@ export const authService = {
         lastName: user.lastName,
         role: user.role,
         isEmailVerified: user.isEmailVerified,
-        avatar: user.avatar,
+        avatar: user.avatar || '',
         provider: user.provider,
       },
       tokens,
@@ -173,7 +176,7 @@ export const authService = {
       lastName: tokenRecord.user.lastName,
       role: tokenRecord.user.role,
       isEmailVerified: tokenRecord.user.isEmailVerified,
-      avatar: tokenRecord.user.avatar,
+      avatar: tokenRecord.user.avatar || '',
       provider: tokenRecord.user.provider,
     });
 
@@ -246,7 +249,7 @@ export const authService = {
       throw new AppError('User not found', 404);
     }
 
-    const isCurrentPasswordValid = await comparePassword(currentPassword, user.password);
+    const isCurrentPasswordValid = await comparePassword(currentPassword, user.password || '');
     if (!isCurrentPasswordValid) {
       throw new AppError('Current password is incorrect', 400);
     }

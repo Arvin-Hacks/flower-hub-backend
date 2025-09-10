@@ -28,6 +28,7 @@ export const userService = {
 
     return {
       ...user,
+      addresses: [],
       preferences: {
         emailNotifications: true,
         smsNotifications: false,
@@ -50,18 +51,6 @@ export const userService = {
         take: limit,
         orderBy: { [sortBy]: sortOrder },
         include: {
-          addresses: true,
-        },
-        select: {
-          id: true,
-          email: true,
-          firstName: true,
-          lastName: true,
-          role: true,
-          isEmailVerified: true,
-          avatar: true,
-          createdAt: true,
-          updatedAt: true,
           addresses: true,
         },
       }),
@@ -107,7 +96,7 @@ export const userService = {
         password, // Note: In real app, hash this password
         firstName,
         lastName,
-        role,
+        role: role as any,
       },
       include: {
         addresses: true,
@@ -203,6 +192,7 @@ export const userService = {
     const address = await prisma.address.create({
       data: {
         ...addressData,
+        type: addressData.type as any,
         userId,
         isDefault: isDefault || false,
       },
@@ -241,6 +231,7 @@ export const userService = {
       where: { id: addressId },
       data: {
         ...addressData,
+        ...(addressData.type && { type: addressData.type as any }),
         ...(isDefault !== undefined && { isDefault }),
       },
     });

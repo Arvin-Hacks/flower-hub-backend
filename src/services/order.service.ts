@@ -269,7 +269,7 @@ export const orderService = {
         status: 'PENDING' as any,
         paymentMethod: 'CASH_ON_DELIVERY' as any, // Default payment method
         paymentStatus: 'PENDING' as any,
-        notes,
+        notes: notes || null,
         shippingAddressId: createdShippingAddress.id,
         billingAddressId: createdBillingAddress.id,
         items: {
@@ -340,7 +340,10 @@ export const orderService = {
 
     const updatedOrder = await prisma.order.update({
       where: { id: orderId },
-      data,
+      data: {
+        ...data,
+        ...(data.status && { status: data.status as any }),
+      },
       include: {
         user: {
           select: {
@@ -452,11 +455,11 @@ export const orderService = {
       prisma.order.count({ where: { status: 'CANCELLED' } }),
     ]);
 
-    const averageOrderValue = totalOrders > 0 ? (totalRevenue._sum.total?.toNumber() || 0) / totalOrders : 0;
+    const averageOrderValue = totalOrders > 0 ? (totalRevenue._sum.total || 0) / totalOrders : 0;
 
     return {
       totalOrders,
-      totalRevenue: totalRevenue._sum.total?.toNumber() || 0,
+      totalRevenue: totalRevenue._sum.total || 0,
       pendingOrders,
       completedOrders,
       cancelledOrders,
@@ -568,7 +571,7 @@ export const orderService = {
     }
 
     // Check minimum amount
-    if (coupon.minimumAmount && amount < coupon.minimumAmount.toNumber()) {
+    if (coupon.minimumAmount && amount < coupon.minimumAmount) {
       return null;
     }
 

@@ -49,7 +49,7 @@ export const authenticate = async (
       return;
     }
 
-    (req as AuthenticatedRequest).user = user;
+    (req as AuthenticatedRequest).user = user as any;
     next();
   } catch (error) {
     sendUnauthorized(res, 'Invalid or expired token');
@@ -86,7 +86,7 @@ export const optionalAuth = async (
     });
 
     if (user) {
-      (req as AuthenticatedRequest).user = user;
+      (req as AuthenticatedRequest).user = user as any;
     }
     
     next();
@@ -121,7 +121,7 @@ export const adminOnly = (req: Request, res: Response, next: NextFunction): void
   }
 
   const user = (req as AuthenticatedRequest).user!;
-  if (user.role !== 'admin' && user.role !== 'super_admin') {
+  if (user.role !== 'ADMIN' && user.role !== 'SUPER_ADMIN') {
     sendForbidden(res, 'Admin access required');
     return;
   }
@@ -137,7 +137,7 @@ export const superAdminOnly = (req: Request, res: Response, next: NextFunction):
   }
 
   const user = (req as AuthenticatedRequest).user!;
-  if (user.role !== 'super_admin') {
+  if (user.role !== 'SUPER_ADMIN') {
     sendForbidden(res, 'Super admin access required');
     return;
   }

@@ -33,7 +33,7 @@ export const orderController = {
     const order = await orderService.getOrderById(orderId as string);
     
     // Check if user owns this order or is admin
-    if (order.userId !== ensureUser(req) && req.user?.role === 'user') {
+    if (order.userId !== ensureUser(req) && req.user?.role === 'USER') {
       return sendError(res, 'Access denied', 403);
     }
     
@@ -46,7 +46,7 @@ export const orderController = {
     const order = await orderService.getOrderByNumber(orderNumber as string);
     
     // Check if user owns this order or is admin
-    if (order.userId !== ensureUser(req) && req.user?.role === 'user') {
+    if (order.userId !== ensureUser(req) && req.user?.role === 'USER') {
       return sendError(res, 'Access denied', 403);
     }
     

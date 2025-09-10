@@ -136,7 +136,7 @@ async function main() {
       description: 'A stunning bouquet of 12 red roses, perfect for expressing love and romance. Each rose is carefully selected for its beauty and freshness.',
       price: 45.99,
       originalPrice: 55.99,
-      categoryId: createdCategories[0].id,
+      categoryId: createdCategories[0]?.id || '',
       subcategory: 'Bouquets',
       images: [
         'https://images.unsplash.com/photo-1518895949257-7621c3c786d7?w=800',
@@ -163,7 +163,7 @@ async function main() {
       slug: generateSlug('Pink Rose Arrangement'),
       description: 'Delicate pink roses arranged in an elegant vase. Perfect for birthdays, congratulations, or just to brighten someone\'s day.',
       price: 38.99,
-      categoryId: createdCategories[0].id,
+      categoryId: createdCategories[0]?.id || '',
       subcategory: 'Arrangements',
       images: [
         'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=800',
@@ -191,7 +191,7 @@ async function main() {
       slug: generateSlug('Mixed Tulip Arrangement'),
       description: 'A colorful arrangement of mixed tulips in various colors. Perfect for spring celebrations and home decoration.',
       price: 32.99,
-      categoryId: createdCategories[1].id,
+      categoryId: createdCategories[1]?.id || '',
       subcategory: 'Arrangements',
       images: [
         'https://images.unsplash.com/photo-1520763185298-1b434c919102?w=800',
@@ -218,7 +218,7 @@ async function main() {
       slug: generateSlug('Yellow Tulip Bouquet'),
       description: 'Bright yellow tulips that bring sunshine to any room. Perfect for spring celebrations and cheerful occasions.',
       price: 28.99,
-      categoryId: createdCategories[1].id,
+      categoryId: createdCategories[1]?.id || '',
       subcategory: 'Bouquets',
       images: [
         'https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=800',
@@ -247,7 +247,7 @@ async function main() {
       description: 'Elegant white lilies arranged in a beautiful centerpiece. Perfect for weddings, anniversaries, and special occasions.',
       price: 65.99,
       originalPrice: 75.99,
-      categoryId: createdCategories[2].id,
+      categoryId: createdCategories[2]?.id || '',
       subcategory: 'Centerpieces',
       images: [
         'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=800',
@@ -274,7 +274,7 @@ async function main() {
       slug: generateSlug('Pink Lily Arrangement'),
       description: 'Soft pink lilies in a modern arrangement. Perfect for adding elegance to any space.',
       price: 52.99,
-      categoryId: createdCategories[2].id,
+      categoryId: createdCategories[2]?.id || '',
       subcategory: 'Arrangements',
       images: [
         'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=800',
@@ -302,7 +302,7 @@ async function main() {
       slug: generateSlug('Sunflower Bouquet'),
       description: 'Bright and cheerful sunflowers arranged in a beautiful bouquet. Perfect for bringing joy and warmth to any space.',
       price: 28.99,
-      categoryId: createdCategories[3].id,
+      categoryId: createdCategories[3]?.id || '',
       subcategory: 'Bouquets',
       images: [
         'https://images.unsplash.com/photo-1597848212624-e17eb5d2e0b4?w=800',
@@ -329,7 +329,7 @@ async function main() {
       slug: generateSlug('Sunflower Centerpiece'),
       description: 'A stunning centerpiece featuring sunflowers and seasonal greens. Perfect for autumn celebrations.',
       price: 42.99,
-      categoryId: createdCategories[3].id,
+      categoryId: createdCategories[3]?.id || '',
       subcategory: 'Centerpieces',
       images: [
         'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800',
@@ -358,7 +358,7 @@ async function main() {
       description: 'Exotic purple orchid plant in a decorative pot. Perfect for adding elegance and sophistication to any room.',
       price: 89.99,
       originalPrice: 99.99,
-      categoryId: createdCategories[4].id,
+      categoryId: createdCategories[4]?.id || '',
       subcategory: 'Plants',
       images: [
         'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=800',
@@ -385,7 +385,7 @@ async function main() {
       slug: generateSlug('White Orchid Arrangement'),
       description: 'Pure white orchids in an elegant arrangement. Perfect for sophisticated spaces and special occasions.',
       price: 95.99,
-      categoryId: createdCategories[4].id,
+      categoryId: createdCategories[4]?.id || '',
       subcategory: 'Arrangements',
       images: [
         'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=800',
@@ -413,7 +413,7 @@ async function main() {
       slug: generateSlug('Mixed Spring Bouquet'),
       description: 'A beautiful mix of spring flowers including roses, tulips, and seasonal blooms. Perfect for any spring celebration.',
       price: 35.99,
-      categoryId: createdCategories[5].id,
+      categoryId: createdCategories[5]?.id || '',
       subcategory: 'Bouquets',
       images: [
         'https://images.unsplash.com/photo-1518895949257-7621c3c786d7?w=800',
@@ -441,7 +441,7 @@ async function main() {
       description: 'A romantic bouquet of red roses and complementary flowers. Perfect for expressing love and passion.',
       price: 48.99,
       originalPrice: 58.99,
-      categoryId: createdCategories[5].id,
+      categoryId: createdCategories[5]?.id || '',
       subcategory: 'Bouquets',
       images: [
         'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=800',
@@ -469,7 +469,7 @@ async function main() {
       slug: generateSlug('Modern White Arrangement'),
       description: 'A modern white flower arrangement perfect for contemporary spaces. Clean, elegant, and sophisticated.',
       price: 55.99,
-      categoryId: createdCategories[6].id,
+      categoryId: createdCategories[6]?.id || '',
       subcategory: 'Arrangements',
       images: [
         'https://images.unsplash.com/photo-1520763185298-1b434c919102?w=800',
@@ -496,7 +496,7 @@ async function main() {
       slug: generateSlug('Tropical Arrangement'),
       description: 'A vibrant tropical arrangement with exotic flowers and lush greenery. Perfect for bringing the tropics home.',
       price: 62.99,
-      categoryId: createdCategories[6].id,
+      categoryId: createdCategories[6]?.id || '',
       subcategory: 'Arrangements',
       images: [
         'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=800',
@@ -524,7 +524,7 @@ async function main() {
       slug: generateSlug('Succulent Garden'),
       description: 'A beautiful collection of succulents in a decorative planter. Low maintenance and perfect for any space.',
       price: 34.99,
-      categoryId: createdCategories[7].id,
+      categoryId: createdCategories[7]?.id || '',
       subcategory: 'Plants',
       images: [
         'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=800',
@@ -552,7 +552,7 @@ async function main() {
       description: 'A stunning fiddle leaf fig plant that adds elegance to any room. Perfect for modern interior design.',
       price: 79.99,
       originalPrice: 89.99,
-      categoryId: createdCategories[7].id,
+      categoryId: createdCategories[7]?.id || '',
       subcategory: 'Plants',
       images: [
         'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=800',
@@ -580,7 +580,7 @@ async function main() {
       slug: generateSlug('Wedding Centerpiece'),
       description: 'An elegant centerpiece perfect for weddings and special occasions. Features white and blush flowers.',
       price: 75.99,
-      categoryId: createdCategories[8].id,
+      categoryId: createdCategories[8]?.id || '',
       subcategory: 'Centerpieces',
       images: [
         'https://images.unsplash.com/photo-1597848212624-e17eb5d2e0b4?w=800',
@@ -607,7 +607,7 @@ async function main() {
       slug: generateSlug('Holiday Centerpiece'),
       description: 'A festive centerpiece perfect for holiday celebrations. Features seasonal flowers and greenery.',
       price: 68.99,
-      categoryId: createdCategories[8].id,
+      categoryId: createdCategories[8]?.id || '',
       subcategory: 'Centerpieces',
       images: [
         'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=800',
@@ -635,7 +635,7 @@ async function main() {
       slug: generateSlug('Floating Candles with Flowers'),
       description: 'Elegant floating candles with flower petals. Perfect for creating a romantic and magical atmosphere.',
       price: 42.99,
-      categoryId: createdCategories[9].id,
+      categoryId: createdCategories[9]?.id || '',
       subcategory: 'Decorations',
       images: [
         'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=800',
@@ -663,7 +663,7 @@ async function main() {
       description: 'Beautiful dried flower arrangement framed as wall art. Perfect for adding natural beauty to any space.',
       price: 58.99,
       originalPrice: 68.99,
-      categoryId: createdCategories[9].id,
+      categoryId: createdCategories[9]?.id || '',
       subcategory: 'Decorations',
       images: [
         'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=800',
