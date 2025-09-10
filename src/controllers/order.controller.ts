@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
-import { orderService } from '@/services/order.service';
-import { sendSuccess, sendError } from '@/utils/response';
-import { asyncHandler } from '@/middleware/error';
-import { AuthenticatedRequest, OrderFilters } from '@/types';
-import { ensureUser } from '@/middleware/auth';
+import { orderService } from '../services/order.service';
+import { sendSuccess, sendError } from '../utils/response';
+import { asyncHandler } from '../middleware/error';
+import { AuthenticatedRequest, OrderFilters } from '../types';
+import { ensureUser } from '../middleware/auth';
 
 export const orderController = {
   // Get user's orders

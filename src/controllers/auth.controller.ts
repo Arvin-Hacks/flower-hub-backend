@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
-import { authService } from '@/services/auth.service';
-import { sendSuccess } from '@/utils/response';
-import { asyncHandler } from '@/middleware/error';
-import { AuthenticatedRequest } from '@/types';
-import { ensureUser } from '@/middleware/auth';
+import { authService } from '../services/auth.service';
+import { sendSuccess } from '../utils/response';
+import { asyncHandler } from '../middleware/error';
+import { AuthenticatedRequest } from '../types';
+import { ensureUser } from '../middleware/auth';
 
 export const authController = {
   // Register new user

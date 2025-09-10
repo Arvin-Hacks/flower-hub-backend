@@ -1,4 +1,4 @@
-import { prisma } from '@/database';
+import { prisma } from '../database';
 import { 
   Cart, 
   CartItem, 
@@ -6,10 +6,10 @@ import {
   UpdateCartItemRequest,
   WishlistItem,
   AddToWishlistRequest
-} from '@/types';
-import { AppError } from '@/middleware/error';
-import { calculateTax, calculateShipping } from '@/utils/helpers';
-import { logger } from '@/utils/logger';
+} from '../types';
+import { AppError } from '../middleware/error';
+import { calculateTax, calculateShipping } from '../utils/helpers';
+import { logger } from '../utils/logger';
 
 export const cartService = {
   // Get user's cart

@@ -1,6 +1,6 @@
 import multer from 'multer';
 import { Request } from 'express';
-import { logger } from '@/utils/logger';
+import { logger } from '../utils/logger';
 
 // Configure multer for memory storage
 const storage = multer.memoryStorage();

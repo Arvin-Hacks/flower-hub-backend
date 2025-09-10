@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { imageController } from '@/controllers/image.controller';
-import { uploadSingle, uploadMultiple, handleUploadError } from '@/middleware/upload';
-import { authenticate, adminOnly } from '@/middleware/auth';
-import { validate } from '@/utils/validation';
+import { imageController } from '../controllers/image.controller';
+import { uploadSingle, uploadMultiple, handleUploadError } from '../middleware/upload';
+import { authenticate, adminOnly } from '../middleware/auth';
+import { validate } from '../utils/validation';
 import Joi from 'joi';
 
 const router = Router();

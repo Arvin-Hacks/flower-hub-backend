@@ -94,7 +94,7 @@ The following packages are already included in the project:
 
 ### Backend
 ```typescript
-import { cloudinaryService } from '@/services/cloudinary.service';
+import { cloudinaryService } from '../services/cloudinary.service';
 
 // Upload single image
 const result = await cloudinaryService.uploadImage(file, {
@@ -112,7 +112,7 @@ await cloudinaryService.deleteImage(publicId);
 
 ### Frontend
 ```typescript
-import { imageAPI } from '@/services/imageAPI';
+import { imageAPI } from '../services/imageAPI';
 
 // Upload single image
 const result = await imageAPI.uploadSingle(file);

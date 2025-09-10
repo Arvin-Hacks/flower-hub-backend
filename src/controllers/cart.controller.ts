@@ -1,9 +1,9 @@
 import { Response } from 'express';
-import { cartService } from '@/services/cart.service';
-import { sendSuccess } from '@/utils/response';
-import { asyncHandler } from '@/middleware/error';
-import { AuthenticatedRequest } from '@/types';
-import { ensureUser } from '@/middleware/auth';
+import { cartService } from '../services/cart.service';
+import { sendSuccess } from '../utils/response';
+import { asyncHandler } from '../middleware/error';
+import { AuthenticatedRequest } from '../types';
+import { ensureUser } from '../middleware/auth';
 
 export const cartController = {
   // Get user's cart

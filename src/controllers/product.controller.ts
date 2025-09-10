@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
-import { productService } from '@/services/product.service';
-import { sendSuccess } from '@/utils/response';
-import { asyncHandler } from '@/middleware/error';
-import { AuthenticatedRequest, ProductFilters } from '@/types';
-import { ensureUser } from '@/middleware/auth';
+import { productService } from '../services/product.service';
+import { sendSuccess } from '../utils/response';
+import { asyncHandler } from '../middleware/error';
+import { AuthenticatedRequest, ProductFilters } from '../types';
+import { ensureUser } from '../middleware/auth';
 
 export const productController = {
   // Get all products

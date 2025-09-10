@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
-import { userService } from '@/services/user.service';
-import { sendSuccess } from '@/utils/response';
-import { asyncHandler } from '@/middleware/error';
-import { AuthenticatedRequest } from '@/types';
-import { ensureUser } from '@/middleware/auth';
+import { userService } from '../services/user.service';
+import { sendSuccess } from '../utils/response';
+import { asyncHandler } from '../middleware/error';
+import { AuthenticatedRequest } from '../types';
+import { ensureUser } from '../middleware/auth';
 
 export const userController = {
   // Get user profile

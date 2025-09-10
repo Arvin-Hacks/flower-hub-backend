@@ -8,16 +8,16 @@ import { createWriteStream, mkdirSync } from 'fs';
 import { join } from 'path';
 
 // Import middleware
-import { errorHandler, notFoundHandler, handleUnhandledRejection, handleUncaughtException } from '@/middleware/error';
+import { errorHandler, notFoundHandler, handleUnhandledRejection, handleUncaughtException } from './middleware/error';
 
 // Import routes
-import routes from '@/routes';
+import routes from './routes';
 
 // Import database
-import { prisma } from '@/database';
+import { prisma } from './database';
 
 // Import logger
-import { logger } from '@/utils/logger';
+import { logger } from './utils/logger';
 
 // Load environment variables
 dotenv.config();

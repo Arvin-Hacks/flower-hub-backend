@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
-import { verifyAccessToken, extractTokenFromHeader } from '@/utils/auth';
-import { sendUnauthorized, sendForbidden } from '@/utils/response';
-import { prisma } from '@/database';
-import { AuthenticatedRequest } from '@/types';
-import { UserRole } from '@/types/common.types';
+import { verifyAccessToken, extractTokenFromHeader } from '../utils/auth';
+import { sendUnauthorized, sendForbidden } from '../utils/response';
+import { prisma } from '../database';
+import { AuthenticatedRequest } from '../types';
+import { UserRole } from '../types/common.types';
 
 // Helper function to ensure user exists
 export const ensureUser = (req: AuthenticatedRequest): string => {

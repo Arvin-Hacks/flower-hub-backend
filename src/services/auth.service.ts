@@ -1,4 +1,4 @@
-import { prisma } from '@/database';
+import { prisma } from '../database';
 import { 
   hashPassword, 
   comparePassword, 
@@ -8,7 +8,7 @@ import {
   generatePasswordResetToken,
   verifyEmailVerificationToken,
   verifyPasswordResetToken
-} from '@/utils/auth';
+} from '../utils/auth';
 import { 
   LoginCredentials, 
   SignupCredentials, 
@@ -19,10 +19,10 @@ import {
   ChangePasswordRequest,
   VerifyEmailRequest,
   ResendVerificationRequest
-} from '@/types';
-import { AppError } from '@/middleware/error';
-// import { generateSlug } from '@/utils/helpers';
-import { logger } from '@/utils/logger';
+} from '../types';
+import { AppError } from '../middleware/error';
+// import { generateSlug } from '../utils/helpers';
+import { logger } from '../utils/logger';
 
 export const authService = {
   // Register new user
