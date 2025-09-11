@@ -1,19 +1,9 @@
 {
     "version": 2,
     "builds": [
-      {
-        "src": "dist/server.js",
-        "use": "@vercel/node"
-      }
+      { "src": "src/server.ts", "use": "@vercel/node" }
     ],
     "routes": [
-      {
-        "src": "/(.*)",
-        "dest": "dist/server.js"
-      }
-    ],
-    "env": {
-      "NODE_ENV": "production"
-    },
-    "buildCommand": "prisma generate && npm run build"
+      { "src": "/(.*)", "dest": "src/server.ts" }
+    ]
   }
