@@ -48,8 +48,19 @@ app.use(helmet({
 app.use(cors());
 
 // CORS configuration
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  'http://localhost:3000',
+  'http://localhost:5173',
+  'https://flower-hub-frontend.vercel.app', // adjust if your FE domain differs
+].filter(Boolean) as string[];
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000' || 'http://localhost:5173',
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+    const ok = allowedOrigins.some(o => o === origin || (o.endsWith('.vercel.app') && origin.endsWith('.vercel.app')));
+    callback(ok ? null : new Error('Not allowed by CORS'), ok);
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
