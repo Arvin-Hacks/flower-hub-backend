@@ -1,9 +1,22 @@
-import { createWriteStream } from 'fs';
+import { createWriteStream, mkdirSync } from 'fs';
 import { join } from 'path';
 
 // Simple logger implementation
 class Logger {
-  private logStream = createWriteStream(join(process.cwd(), 'logs', 'app.log'), { flags: 'a' });
+  private logStream: ReturnType<typeof createWriteStream> | null = null;
+
+  constructor() {
+    if (process.env.NODE_ENV === 'development') {
+      const logsDir = join(process.cwd(), 'logs');
+      try {
+        mkdirSync(logsDir, { recursive: true });
+        this.logStream = createWriteStream(join(logsDir, 'app.log'), { flags: 'a' });
+      } catch {
+        // Ignore filesystem errors in development setup
+        this.logStream = null;
+      }
+    }
+  }
 
   private formatMessage(level: string, message: string, meta?: unknown): string {
     const timestamp = new Date().toISOString();
@@ -13,15 +26,15 @@ class Logger {
 
   private writeLog(level: string, message: string, meta?: unknown): void {
     const formattedMessage = this.formatMessage(level, message, meta);
-    
-    // Write to console (only in development)
-    if (process.env.NODE_ENV === 'development') {
-      // eslint-disable-next-line no-console
-      console.log(message, meta);
+
+    // Always write to console (captured by Vercel in production)
+    // eslint-disable-next-line no-console
+    console.log(formattedMessage.trim());
+
+    // Only write to file in development when stream is available
+    if (this.logStream) {
+      this.logStream.write(formattedMessage);
     }
-    
-    // Write to file
-    this.logStream.write(formattedMessage);
   }
 
   info(message: string, meta?: unknown): void {
