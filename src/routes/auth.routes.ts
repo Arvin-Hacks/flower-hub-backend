@@ -4,6 +4,7 @@ import { validate } from '../utils/validation';
 import { commonSchemas } from '../utils/validation';
 import Joi from 'joi';
 import { authenticate } from '../middleware/auth';
+import passport from '../config/passport';
 
 const router = Router();
 
@@ -54,6 +55,16 @@ router.post('/forgot-password',validate(forgotPasswordSchema), authController.fo
 router.post('/reset-password',validate(resetPasswordSchema), authController.resetPassword);
 router.post('/verify-email', validate(verifyEmailSchema), authController.verifyEmail);
 router.post('/resend-verification', validate(resendVerificationSchema), authController.resendVerification);
+
+// Google OAuth routes
+router.get('/google', passport.authenticate('google', { scope: ['openid', 'profile', 'email'] }));
+router.get('/google/callback', 
+  passport.authenticate('google', { 
+    session: false, 
+    failureRedirect: `${process.env.FRONTEND_URL || 'http://localhost:5173'}/login?error=authentication_failed` 
+  }),
+  authController.googleCallback
+);
 
 // Protected routes
 router.post('/logout', validate(refreshTokenSchema), authController.logout);

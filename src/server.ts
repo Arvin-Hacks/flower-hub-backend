@@ -19,6 +19,9 @@ import { prisma } from './database';
 // Import logger
 import { logger } from './utils/logger';
 
+// Import passport
+import passport from './config/passport';
+
 // Load environment variables
 dotenv.config();
 
@@ -37,13 +40,7 @@ try {
 // Create Express app
 const app = express();
 
-// Trust proxy (for rate limiting and IP detection)
-app.set('trust proxy', 1);
 
-// Security middleware
-app.use(helmet({
-  crossOriginResourcePolicy: { policy: "cross-origin" }
-}));
 
 app.use(cors());
 
@@ -55,6 +52,15 @@ const allowedOrigins = [
   'https://flower-hub-frontend.vercel.app', // adjust if your FE domain differs
 ].filter(Boolean) as string[];
 
+if(process.env.NODE_ENV === 'production') {
+  // Trust proxy (for rate limiting and IP detection)
+  app.set('trust proxy', 1);
+
+  // Security middleware
+  app.use(helmet({
+    crossOriginResourcePolicy: { policy: "cross-origin" }
+  }));
+  
 app.use(cors({
   origin: (origin, callback) => {
     if (!origin) return callback(null, true);
@@ -63,8 +69,11 @@ app.use(cors({
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
-}));
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  }));
+}else{
+  app.use(cors());
+}
 
 // Compression middleware
 app.use(compression());
@@ -81,6 +90,9 @@ if (process.env.NODE_ENV === 'production') {
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// Initialize Passport
+app.use(passport.initialize());
 
 // API routes
 app.use('/api/v1', routes);
