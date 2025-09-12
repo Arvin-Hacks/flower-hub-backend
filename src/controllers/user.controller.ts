@@ -50,14 +50,35 @@ export const userController = {
     sendSuccess(res, null, 'Address deleted successfully');
   }),
 
+  // Set default address
+  setDefaultAddress: asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+    const { addressId } = req.params;
+    const address = await userService.setDefaultAddress(ensureUser(req), addressId as string);
+    sendSuccess(res, address, 'Default address set successfully');
+  }),
+
   // Admin: Get all users
   getUsers: asyncHandler(async (req: Request, res: Response) => {
-    const { page, limit, sortBy, sortOrder } = req.query;
+    const { 
+      page, 
+      limit, 
+      sortBy, 
+      sortOrder, 
+      search, 
+      role, 
+      isActive, 
+      isEmailVerified 
+    } = req.query;
+    
     const users = await userService.getUsers({
       page: Number(page) || 1,
       limit: Number(limit) || 10,
       sortBy: sortBy as string || 'createdAt',
       sortOrder: sortOrder as 'asc' | 'desc' || 'desc',
+      search: search as string,
+      role: role as string,
+      isActive: isActive === 'true' ? true : isActive === 'false' ? false : true,
+      isEmailVerified: isEmailVerified === 'true' ? true : isEmailVerified === 'false' ? false : false,
     });
     sendSuccess(res, users, 'Users retrieved');
   }),
@@ -67,6 +88,13 @@ export const userController = {
     const { userId } = req.params;
     const user = await userService.getUserById(userId as string);
     sendSuccess(res, user, 'User retrieved');
+  }),
+
+  // Admin: Get detailed customer analytics
+  getCustomerDetails: asyncHandler(async (req: Request, res: Response) => {
+    const { userId } = req.params;
+    const customerDetails = await userService.getCustomerDetails(userId as string);
+    sendSuccess(res, customerDetails, 'Customer details retrieved');
   }),
 
   // Admin: Create user
@@ -93,5 +121,11 @@ export const userController = {
   getUserStats: asyncHandler(async (req: Request, res: Response) => {
     const stats = await userService.getUserStats();
     sendSuccess(res, stats, 'User statistics retrieved');
+  }),
+
+  // Admin: Get customer analytics
+  getCustomerAnalytics: asyncHandler(async (req: Request, res: Response) => {
+    const analytics = await userService.getCustomerAnalytics();
+    sendSuccess(res, analytics, 'Customer analytics retrieved');
   }),
 };
