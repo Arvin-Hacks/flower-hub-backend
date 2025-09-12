@@ -81,14 +81,17 @@ router.delete('/account', authenticate, userController.deleteAccount);
 router.get('/addresses', authenticate, userController.getAddresses);
 router.post('/addresses', authenticate, validate(createAddressSchema), userController.createAddress);
 router.put('/addresses/:addressId', authenticate, validateParams(addressIdSchema), validate(updateAddressSchema), userController.updateAddress);
+router.put('/addresses/:addressId/default', authenticate, validateParams(addressIdSchema), userController.setDefaultAddress);
 router.delete('/addresses/:addressId', authenticate, validateParams(addressIdSchema), userController.deleteAddress);
 
 // Admin routes
 router.get('/admin/users', authenticate, adminOnly, userController.getUsers);
 router.get('/admin/users/:userId', authenticate, adminOnly, validateParams(idSchema), userController.getUserById);
+router.get('/admin/users/:userId/details', authenticate, adminOnly, validateParams(idSchema), userController.getCustomerDetails);
 router.post('/admin/users', authenticate, adminOnly, validate(createUserSchema), userController.createUser);
 router.put('/admin/users/:userId', authenticate, adminOnly, validateParams(idSchema), validate(updateUserSchema), userController.updateUser);
 router.delete('/admin/users/:userId', authenticate, adminOnly, validateParams(idSchema), userController.deleteUser);
 router.get('/admin/stats', authenticate, adminOnly, userController.getUserStats);
+router.get('/admin/analytics', authenticate, adminOnly, userController.getCustomerAnalytics);
 
 export default router;

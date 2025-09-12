@@ -299,4 +299,44 @@ export const authService = {
 
     // TODO: Send verification email
   },
+
+  // Google OAuth login/signup
+  async googleAuth(user: any): Promise<AuthResponse> {
+    // Generate tokens
+    const tokens = generateTokens({
+      id: user.id,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      role: user.role,
+      isEmailVerified: user.isEmailVerified,
+      avatar: user.avatar || '',
+      provider: user.provider,
+    });
+
+    // Store refresh token
+    await prisma.refreshToken.create({
+      data: {
+        token: tokens.refreshToken,
+        userId: user.id,
+        expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
+      },
+    });
+
+    logger.info('Google OAuth successful', { userId: user.id, email: user.email });
+
+    return {
+      user: {
+        id: user.id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        role: user.role,
+        isEmailVerified: user.isEmailVerified,
+        avatar: user.avatar || '',
+        provider: user.provider,
+      },
+      tokens,
+    };
+  },
 };

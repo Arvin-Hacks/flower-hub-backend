@@ -71,4 +71,33 @@ export const authController = {
   me: asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
     sendSuccess(res, req.user, 'User profile retrieved');
   }),
+
+  // Google OAuth - initiate authentication
+  googleAuth: asyncHandler(async (req: Request, res: Response) => {
+    // This will redirect to Google
+    // The actual logic is handled by passport middleware
+  }),
+
+  // Google OAuth - handle callback
+  googleCallback: asyncHandler(async (req: Request, res: Response) => {
+    try {
+      const user = req.user as any;
+      if (!user) {
+        const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+        return res.redirect(`${frontendUrl}/login?error=authentication_failed`);
+      }
+
+      // Generate tokens for the user
+      const result = await authService.googleAuth(user);
+      
+      // Redirect to frontend with tokens
+      const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+      const redirectUrl = `${frontendUrl}/auth/callback?token=${result.tokens.accessToken}&refresh=${result.tokens.refreshToken}`;
+      
+      res.redirect(redirectUrl);
+    } catch (error) {
+      const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+      res.redirect(`${frontendUrl}/login?error=authentication_failed`);
+    }
+  }),
 };

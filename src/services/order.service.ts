@@ -338,6 +338,8 @@ export const orderService = {
       throw new AppError('Order not found', 404);
     }
 
+    console.log("Order Update data ============>", data);
+
     const updatedOrder = await prisma.order.update({
       where: { id: orderId },
       data: {

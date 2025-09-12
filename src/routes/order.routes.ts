@@ -48,7 +48,7 @@ const createOrderSchema = Joi.object({
 });
 
 const updateOrderSchema = Joi.object({
-  status: Joi.string().valid('pending', 'confirmed', 'processing', 'shipped', 'delivered', 'cancelled', 'refunded').optional(),
+    status: Joi.string().valid('PENDING', 'CONFIRMED', 'PROCESSING', 'SHIPPED', 'DELIVERED', 'CANCELLED', 'REFUNDED').optional(),
   trackingNumber: Joi.string().optional(),
   estimatedDelivery: Joi.date().optional(),
   notes: Joi.string().max(500).optional(),
@@ -98,21 +98,21 @@ const couponCodeSchema = Joi.object({
   code: Joi.string().required(),
 });
 
-// User routes (authenticated)
-router.get('/my-orders', authenticate, orderController.getUserOrders);
-router.get('/:orderId', authenticate, validateParams(idSchema), orderController.getOrderById);
-router.get('/number/:orderNumber', authenticate, validateParams(orderNumberSchema), orderController.getOrderByNumber);
-router.post('/', authenticate, orderController.createOrder);
-router.put('/:orderId/cancel', authenticate, validateParams(idSchema), orderController.cancelOrder);
+// Admin routes (must come before user routes with params)
+router.get('/admin/orders', authenticate, adminOnly, orderController.getOrders);
+router.put('/admin/orders/:orderId', authenticate, adminOnly, validateParams(idSchema), validate(updateOrderSchema), orderController.updateOrder);
+router.get('/admin/summary', authenticate, adminOnly, orderController.getOrderSummary);
 
 // Public routes
 router.get('/coupons', orderController.getCoupons);
 router.get('/coupons/:code', validateParams(couponCodeSchema), orderController.getCouponByCode);
 
-// Admin routes
-router.get('/admin/orders', authenticate, adminOnly, orderController.getOrders);
-router.put('/admin/orders/:orderId', authenticate, adminOnly, validateParams(idSchema), validate(updateOrderSchema), orderController.updateOrder);
-router.get('/admin/summary', authenticate, adminOnly, orderController.getOrderSummary);
+// User routes (authenticated) - these must come after admin routes
+router.get('/my-orders', authenticate, orderController.getUserOrders);
+router.get('/number/:orderNumber', authenticate, validateParams(orderNumberSchema), orderController.getOrderByNumber);
+router.post('/', authenticate, orderController.createOrder);
+router.put('/:orderId/cancel', authenticate, validateParams(idSchema), orderController.cancelOrder);
+router.get('/:orderId', authenticate, validateParams(idSchema), orderController.getOrderById);
 
 router.post('/admin/coupons', authenticate, adminOnly, validate(createCouponSchema), orderController.createCoupon);
 router.put('/admin/coupons/:couponId', authenticate, adminOnly, validateParams(couponIdSchema), validate(updateCouponSchema), orderController.updateCoupon);
