@@ -184,26 +184,63 @@ export const orderService = {
   async createOrder(userId: string, data: CreateOrderRequest): Promise<Order> {
     const { items, shippingAddress, billingAddress, notes, couponCode } = data;
 
-    // Create addresses in database
-    const { id: shippingId, ...shippingData } = shippingAddress;
-    const { id: billingId, ...billingData } = billingAddress;
-    
-    const [createdShippingAddress, createdBillingAddress] = await Promise.all([
-      prisma.address.create({
+    // Handle addresses - use existing if ID provided, create new if not
+    let shippingAddressId: string;
+    let billingAddressId: string;
+
+    if (shippingAddress.id) {
+      // Use existing shipping address
+      const existingShippingAddress = await prisma.address.findFirst({
+        where: { 
+          id: shippingAddress.id,
+          userId: userId // Ensure user owns the address
+        }
+      });
+      
+      if (!existingShippingAddress) {
+        throw new AppError('Shipping address not found or access denied', 404);
+      }
+      
+      shippingAddressId = existingShippingAddress.id;
+    } else {
+      // Create new shipping address
+      const { id: _, ...shippingData } = shippingAddress;
+      const createdShippingAddress = await prisma.address.create({
         data: {
           ...shippingData,
-          type: 'SHIPPING', // Convert to uppercase enum value
+          type: 'SHIPPING',
           userId,
         },
-      }),
-      prisma.address.create({
+      });
+      shippingAddressId = createdShippingAddress.id;
+    }
+
+    if (billingAddress.id) {
+      // Use existing billing address
+      const existingBillingAddress = await prisma.address.findFirst({
+        where: { 
+          id: billingAddress.id,
+          userId: userId // Ensure user owns the address
+        }
+      });
+      
+      if (!existingBillingAddress) {
+        throw new AppError('Billing address not found or access denied', 404);
+      }
+      
+      billingAddressId = existingBillingAddress.id;
+    } else {
+      // Create new billing address
+      const { id: _, ...billingData } = billingAddress;
+      const createdBillingAddress = await prisma.address.create({
         data: {
           ...billingData,
-          type: 'BILLING', // Convert to uppercase enum value
+          type: 'BILLING',
           userId,
         },
-      }),
-    ]);
+      });
+      billingAddressId = createdBillingAddress.id;
+    }
 
     // Validate products and calculate totals
     let subtotal = 0;
@@ -270,8 +307,8 @@ export const orderService = {
         paymentMethod: 'CASH_ON_DELIVERY' as any, // Default payment method
         paymentStatus: 'PENDING' as any,
         notes: notes || null,
-        shippingAddressId: createdShippingAddress.id,
-        billingAddressId: createdBillingAddress.id,
+        shippingAddressId: shippingAddressId,
+        billingAddressId: billingAddressId,
         items: {
           create: orderItems,
         },

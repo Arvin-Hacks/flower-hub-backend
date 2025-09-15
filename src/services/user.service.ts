@@ -483,11 +483,56 @@ export const userService = {
       throw new AppError('Address not found', 404);
     }
 
-    await prisma.address.delete({
-      where: { id: addressId },
+    // Check if address is being used by any orders
+    const ordersUsingAddress = await prisma.order.findMany({
+      where: {
+        OR: [
+          { shippingAddressId: addressId },
+          { billingAddressId: addressId }
+        ]
+      },
+      select: {
+        id: true,
+        orderNumber: true,
+        status: true,
+        createdAt: true
+      }
     });
 
-    logger.info('Address deleted', { userId, addressId });
+    if (ordersUsingAddress.length > 0) {
+      const activeOrders = ordersUsingAddress.filter(order => 
+        order.status !== 'DELIVERED' && order.status !== 'CANCELLED'
+      );
+
+      if (activeOrders.length > 0) {
+        throw new AppError(
+          `Cannot delete this address as it is being used by ${activeOrders.length} active order(s). Please wait until the order(s) are completed or contact support.`, 
+          400
+        );
+      } else {
+        throw new AppError(
+          `Cannot delete this address as it is linked to ${ordersUsingAddress.length} completed order(s) for record keeping purposes. You can create a new address instead.`, 
+          400
+        );
+      }
+    }
+
+    try {
+      await prisma.address.delete({
+        where: { id: addressId },
+      });
+
+      logger.info('Address deleted', { userId, addressId });
+    } catch (error: any) {
+      // Handle any other foreign key constraint errors
+      if (error.code === 'P2003') {
+        throw new AppError(
+          'Cannot delete this address as it is currently being used. Please try again later or contact support.', 
+          400
+        );
+      }
+      throw error;
+    }
   },
 
   // Set default address

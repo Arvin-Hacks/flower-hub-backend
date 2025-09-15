@@ -12,11 +12,11 @@ const router = Router();
 // Validation schemas
 const createProductSchema = Joi.object({
   name: Joi.string().min(2).max(100).required(),
-  description: Joi.string().min(10).max(1000).required(),
+  description: Joi.string().min(150).max(1000).required(),
   price: Joi.number().positive().required(),
   originalPrice: Joi.number().positive().optional(),
   categoryId: commonSchemas.id,
-  subcategory: Joi.string().min(2).max(50).required(),
+  subcategory: Joi.string().min(2).max(50).optional(),
   images: Joi.array().items(Joi.string().pattern(/^(https?:\/\/|blob:)/)).min(1).required(),
   colors: Joi.array().items(Joi.string()).min(1).required(),
   sizes: Joi.array().items(Joi.string()).min(1).required(),
@@ -37,7 +37,7 @@ const createProductSchema = Joi.object({
 
 const updateProductSchema = Joi.object({
   name: Joi.string().min(2).max(100).optional(),
-  description: Joi.string().min(10).max(1000).optional(),
+  description: Joi.string().min(5).max(1000).optional(),
   price: Joi.number().positive().optional(),
   originalPrice: Joi.number().positive().optional(),
   categoryId: commonSchemas.id.optional(),
@@ -87,11 +87,11 @@ const createReviewSchema = Joi.object({
 // FormData validation schema (for multipart/form-data)
 const createProductFormDataSchema = Joi.object({
   name: Joi.string().min(2).max(100).required(),
-  description: Joi.string().min(10).max(1000).required(),
+  description: Joi.string().min(5).max(1000).required(),
   price: Joi.string().pattern(/^\d+(\.\d{1,2})?$/).required(),
   originalPrice: Joi.string().pattern(/^\d+(\.\d{1,2})?$/).optional(),
   categoryId: commonSchemas.id,
-  subcategory: Joi.string().min(2).max(50).required(),
+  subcategory: Joi.string().min(2).max(50).optional(),
   colors: Joi.string().required(), // JSON string
   sizes: Joi.string().required(), // JSON string
   stockCount: Joi.string().pattern(/^\d+$/).required(),
@@ -100,10 +100,10 @@ const createProductFormDataSchema = Joi.object({
   care: Joi.string().optional(), // JSON string
   isActive: Joi.string().valid('true', 'false').optional(),
   isFeatured: Joi.string().valid('true', 'false').optional(),
-  weight: Joi.string().pattern(/^\d+(\.\d{1,2})?$/).optional(),
-  length: Joi.string().pattern(/^\d+(\.\d{1,2})?$/).optional(),
-  width: Joi.string().pattern(/^\d+(\.\d{1,2})?$/).optional(),
-  height: Joi.string().pattern(/^\d+(\.\d{1,2})?$/).optional(),
+  weight: Joi.number().positive().optional(),
+  length: Joi.number().positive().optional(),
+  width: Joi.number().positive().optional(),
+  height: Joi.number().positive().optional(),
   dimensionUnit: Joi.string().valid('cm', 'in').optional(),
   seoTitle: Joi.string().max(60).optional(),
   seoDescription: Joi.string().max(160).optional(),
