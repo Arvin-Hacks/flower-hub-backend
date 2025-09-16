@@ -38,10 +38,25 @@ export interface OrderItem {
   selectedSize?: string;
 }
 
+// Address interface for order creation (ID is optional for new addresses)
+export interface OrderAddress {
+  id?: string; // Optional - if provided, use existing address
+  type: 'BILLING' | 'SHIPPING';
+  firstName: string;
+  lastName: string;
+  street: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  country: string;
+  isDefault: boolean;
+  phone?: string;
+}
+
 export interface CreateOrderRequest {
   items: CreateOrderItemRequest[];
-  shippingAddress: Address;
-  billingAddress: Address;
+  shippingAddress: OrderAddress;
+  billingAddress: OrderAddress;
   // paymentMethod: PaymentMethod; // Commented out for now
   notes?: string;
   couponCode?: string;

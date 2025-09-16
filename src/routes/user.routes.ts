@@ -46,7 +46,7 @@ const createAddressSchema = Joi.object({
   city: Joi.string().min(2).max(50).required(),
   state: Joi.string().min(2).max(50).required(),
   zipCode: Joi.string().min(3).max(10).required(),
-  country: Joi.string().min(2).max(50).required(),
+  country: Joi.string().min(2).max(50).optional(),
   phone: commonSchemas.phone,
   isDefault: Joi.boolean().optional(),
 });
